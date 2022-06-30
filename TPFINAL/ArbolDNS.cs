@@ -1,26 +1,18 @@
 ﻿namespace TPFINAL
 {
-    public class ArbolGeneral<T>
+    public class ArbolDNS
     {
-        private List<ArbolGeneral<T>> hijos = new List<ArbolGeneral<T>>();
-        private T dato;
-        public ArbolGeneral(T dato)
-        {
-            this.dato = dato;
-        }
-        public T getDato()
-        {
-            return dato;
-        }
-        public List<ArbolGeneral<T>> getHijos()
+        private List<ArbolDNS> hijos = new List<ArbolDNS>();
+        DNS dato;
+        public List<ArbolDNS> getHijos()
         {
             return hijos;
         }
-        public void agregarHijo(ArbolGeneral<T> hijo)
+        public void agregarHijo(ArbolDNS hijo)
         {
             this.getHijos().Add(hijo);
         }
-        public void eliminarHijo(ArbolGeneral<T> hijo)
+        public void eliminarHijo(ArbolDNS hijo)
         {
             this.getHijos().Remove(hijo);
         }
@@ -42,52 +34,52 @@
                 return maxAltura + 1;
             }
         }
-        public int nivel(T dato)
-        {
-            int nivel = 0;
-            if (this.dato.Equals(dato))
-            {
-                return 0;
-            }
-            else
-            {
-                Cola<ArbolGeneral<T>> colaaux = new Cola<ArbolGeneral<T>>();
-                ArbolGeneral<T> arbolAux;
+        //public int nivel(DNS dato)
+        //{
+        //    int nivel = 0;
+        //    if (this.dato.Equals(dato))
+        //    {
+        //        return 0;
+        //    }
+        //    else
+        //    {
+        //        Cola<ArbolDNS> colaaux = new Cola<ArbolDNS>();
+        //        ArbolDNS arbolAux;
 
-                colaaux.encolar(this);
-                colaaux.encolar(null);
+        //        colaaux.encolar(this);
+        //        colaaux.encolar(null);
 
-                while (!colaaux.esVacia())
-                {
-                    arbolAux = colaaux.desencolar();
+        //        while (!colaaux.esVacia())
+        //        {
+        //            arbolAux = colaaux.desencolar();
 
-                    if (arbolAux == null)
-                    {
-                        if (!colaaux.esVacia())
-                        {
-                            nivel++;
-                            colaaux.encolar(null);
-                        }
-                    }
-                    else
-                    {
-                        foreach (var hijo in arbolAux.hijos)
-                        {
-                            if (hijo.dato.Equals(dato))
-                            {
-                                return nivel + 1;
-                            }
-                            colaaux.encolar(hijo);
-                        }
-                    }
-                }
-            }
-            return nivel;
-        }
+        //            if (arbolAux == null)
+        //            {
+        //                if (!colaaux.esVacia())
+        //                {
+        //                    nivel++;
+        //                    colaaux.encolar(null);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                foreach (var hijo in arbolAux.hijos)
+        //                {
+        //                    if (hijo.dato.Equals(dato))
+        //                    {
+        //                        return nivel + 1;
+        //                    }
+        //                    colaaux.encolar(hijo);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return nivel;
+        //}
         public int ancho()
         {
-            Cola<ArbolGeneral<T>> c = new Cola<ArbolGeneral<T>>();
-            ArbolGeneral<T> arbolAux;
+            Cola<ArbolDNS> c = new Cola<ArbolDNS>();
+            ArbolDNS arbolAux;
 
             int nivel = 0;
             int nodosxnivel = 0;
@@ -123,8 +115,6 @@
             }
             return nodosxnivelmax;
         }
-
-
         public void preorden()
         {
             // primero procesamos raiz
@@ -158,8 +148,8 @@
         }
         public void porNiveles()
         {
-            Cola<ArbolGeneral<T>> c = new Cola<ArbolGeneral<T>>();
-            ArbolGeneral<T> arbolAux;
+            Cola<ArbolDNS> c = new Cola<ArbolDNS>();
+            ArbolDNS arbolAux;
 
             c.encolar(this);
             while (!c.esVacia())
@@ -174,8 +164,8 @@
         }
         public void porNivelesConSeparacion()
         {
-            Cola<ArbolGeneral<T>> c = new Cola<ArbolGeneral<T>>();
-            ArbolGeneral<T> arbolAux;
+            Cola<ArbolDNS> c = new Cola<ArbolDNS>();
+            ArbolDNS arbolAux;
 
             int nivel = 0;
 
@@ -206,54 +196,6 @@
                 }
             }
         }
-
-
-
-        public bool existe(ArbolGeneral<DNS> dato)
-        {
-            Cola<ArbolGeneral<T>> c = new Cola<ArbolGeneral<T>>();
-            ArbolGeneral<T> arbolAux;
-            bool existe = false;
-            c.encolar(this);
-            while (!c.esVacia())
-            {
-                arbolAux = c.desencolar();
-                if (arbolAux.getDato().Equals(dato))
-                {
-                    existe = true;
-                    break;
-                }
-                foreach (var hijo in arbolAux.hijos)
-                    c.encolar(hijo);
-            }
-            return existe;
-        }
-        public bool existe2(T dato)
-        {
-            return dato.Equals(this.getDato());
-        }
-
-        public bool incluye(T dato)
-        {
-            Cola<ArbolGeneral<T>> c = new Cola<ArbolGeneral<T>>();
-            ArbolGeneral<T> arbolAux;
-            bool aux = false;
-            c.encolar(this);
-            while (!c.esVacia())
-            {
-                arbolAux = c.desencolar();
-                if (arbolAux.getDato().Equals(dato))
-                {
-                    aux = true;
-                    break;
-                }
-                foreach (var item in getHijos())
-                {
-                    c.encolar(item);
-                }
-            }
-            return aux;
-        }
-
     }
 }
+

@@ -1,17 +1,18 @@
 ﻿using TPFINAL;
 
-ArbolGeneral<string> a1 = new ArbolGeneral<string>("www.");
-ArbolGeneral<string> a2 = new ArbolGeneral<string>(".google");
-ArbolGeneral<string> a3 = new ArbolGeneral<string>(".com");
-
-
-ArbolGeneral<string> DominioDeNivelSuperior = new ArbolGeneral<string>("org");
-ArbolGeneral<string> SubDominio = new ArbolGeneral<string>(".wikipedia");
-ArbolGeneral<string> NombreDelEquipo = new ArbolGeneral<string>("es.");
+ArbolGeneral<DNS> Nodo_raiz = new ArbolGeneral<DNS>(new DNS("Nodo raiz."));
 
 
 
 
-a1.agregarHijo(a2);
-a2.agregarHijo(a3);
+DNS youtubear = new DNS("www.youtube.com.ar", "198.156.1.255", "www");
+DNS google = new DNS("www.google.com", "153.123.141.123", "asd");
+DNS youtube = new DNS("www.youtube.com", "123.221.245.111", "fef");
+youtube.agregar(Nodo_raiz);
+google.agregar(Nodo_raiz);
+youtubear.agregar(Nodo_raiz);
+
+
+Nodo_raiz.porNivelesConSeparacion();
+//Nodo_raiz.postorden();
 
