@@ -24,6 +24,7 @@
         {
             this.getHijos().Remove(hijo);
         }
+
         public bool esHoja()
         {
             return this.getHijos().Count == 0;
@@ -124,7 +125,6 @@
             return nodosxnivelmax;
         }
 
-
         public void preorden()
         {
             // primero procesamos raiz
@@ -206,54 +206,5 @@
                 }
             }
         }
-
-
-
-        public bool existe(ArbolGeneral<DNS> dato)
-        {
-            Cola<ArbolGeneral<T>> c = new Cola<ArbolGeneral<T>>();
-            ArbolGeneral<T> arbolAux;
-            bool existe = false;
-            c.encolar(this);
-            while (!c.esVacia())
-            {
-                arbolAux = c.desencolar();
-                if (arbolAux.getDato().Equals(dato))
-                {
-                    existe = true;
-                    break;
-                }
-                foreach (var hijo in arbolAux.hijos)
-                    c.encolar(hijo);
-            }
-            return existe;
-        }
-        public bool existe2(T dato)
-        {
-            return dato.Equals(this.getDato());
-        }
-
-        public bool incluye(T dato)
-        {
-            Cola<ArbolGeneral<T>> c = new Cola<ArbolGeneral<T>>();
-            ArbolGeneral<T> arbolAux;
-            bool aux = false;
-            c.encolar(this);
-            while (!c.esVacia())
-            {
-                arbolAux = c.desencolar();
-                if (arbolAux.getDato().Equals(dato))
-                {
-                    aux = true;
-                    break;
-                }
-                foreach (var item in getHijos())
-                {
-                    c.encolar(item);
-                }
-            }
-            return aux;
-        }
-
     }
 }

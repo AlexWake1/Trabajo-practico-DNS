@@ -15,23 +15,35 @@
             this.etiqueta = etiqueta;
             this.ip = ip;
             this.servicios = servicios;
-        }
+        }//constructor completo
         public DNS(string etiqueta)
         {
             this.etiqueta = etiqueta;
-        }
+        }//dominio-superior
         public DNS()
         {
 
-        }
+        }//nodo raiz
         public override string ToString()
         {
+            //if (this.getIp() != null)
+            //{
+            //    return etiqueta + " " + ip + " ";
+            //}
+            //else
             return etiqueta + " ";
+
+
             //return " Etiqueta: " + etiqueta + " ip: " + ip + " Servicios: " + servicios + " Es superior: " + esSuperior;
+            //if (getEsHoja())
+            //    return "Hoja";
+            //if (getEsSuperior())
+            //    return "superior";
+            //else return etiqueta + " ";
         }
 
 
-        //propiedades
+        //propiedades-- cuando termine voy a corregir y borrar las propiedades que no use
 
         public string getEtiqueta()
         {
@@ -41,7 +53,6 @@
         {
             this.etiqueta = nuevaEtiqueta;
         }
-
         public string getIp()
         {
             return ip;
@@ -50,7 +61,6 @@
         {
             this.ip = nuevaIP;
         }
-
         public string getServicios()
         {
             return servicios;
@@ -59,7 +69,6 @@
         {
             servicios = listaservicios;
         }
-
         public bool getEsSuperior()
         {
             return esSuperior;
@@ -80,7 +89,6 @@
         {
             return hijos.Count == 0;
         }
-
         public ArbolGeneral<DNS> getPadre()
         {
             return padre;
@@ -89,7 +97,6 @@
         {
             padre = nuevopadre;
         }
-
         public List<ArbolGeneral<DNS>> getHijos()
         {
             return hijos;
@@ -110,14 +117,16 @@
         }
         private void _agregar(ArbolGeneral<DNS> nuevoarbol, string[] etiquetas, int cont, DNS dnsraiz, ArbolGeneral<DNS> nodoraiz)
         {
-
             DNS dnsaux = new DNS(etiquetas[cont]);
             dnsaux.setPadre(nuevoarbol);
-            dnsaux.setEsSuperior(true);
+            //si es la primer etiqueta
+            if (cont == etiquetas.Length - 1)
+            {
+                dnsaux.setEsSuperior(true);
+            }
             //si es ultima etiqueta
             if (cont == 0)
             {
-                dnsaux.setEsSuperior(false);
                 dnsaux.setEsHoja(true);
                 dnsaux.setIp(dnsraiz.getIp());
                 dnsaux.setServicios(dnsraiz.getServicios());
@@ -127,13 +136,16 @@
             ArbolGeneral<DNS> arbolaux = new ArbolGeneral<DNS>(dnsaux);
 
             //si no existe la etiqueta la agrego
-            bool existe = _existe(arbolaux, nodoraiz);
+            bool existe = _existe(arbolaux, nuevoarbol);
+
+            nuevoarbol.agregarHijo(arbolaux);
+
             if (!existe)
             {
-                nuevoarbol.agregarHijo(arbolaux);
             }
-
-
+            if (existe)
+            {
+            }
             if (cont >= 0)
             {
                 _agregar(arbolaux, etiquetas, cont, dnsraiz, nodoraiz);
@@ -158,18 +170,36 @@
             }
             return existe;
         }
-
-        public bool igual(DNS dato)
+        private ArbolGeneral<DNS> _buscar(ArbolGeneral<DNS> dato, ArbolGeneral<DNS> raizgeneral)
         {
-            if (this.getIp != null && dato.getIp() != null)
+            Cola<ArbolGeneral<DNS>> c = new Cola<ArbolGeneral<DNS>>();
+            ArbolGeneral<DNS> arbolAux;
+            bool existe = false;
+            c.encolar(raizgeneral);
+            while (!c.esVacia())
             {
-                if (this.getIp() == dato.getIp() && this.getEtiqueta() == dato.getEtiqueta())
+                arbolAux = c.desencolar();
+                if (arbolAux.getDato().igual(dato.getDato()))
+                {
+                    Console.WriteLine(arbolAux.getDato());
+                    return arbolAux;
+                }
+                foreach (var hijo in arbolAux.getHijos())
+                    c.encolar(hijo);
+            }
+            return null;
+        }
+        private bool igual(DNS dato)
+        {
+            if (this.getEsHoja() && dato.getEsHoja())//si es hoja comparo por ip
+            {
+                if (this.getIp() == dato.getIp())
                 {
                     return true;
                 }
                 else return false;
             }
-            if (this.getIp == null || dato.getIp() == null)
+            if (this.getEsSuperior() && dato.getEsSuperior())//si es superior comparo por etiqueta
             {
                 if (this.getEtiqueta() == dato.getEtiqueta())
                 {
@@ -177,9 +207,52 @@
                 }
                 else return false;
             }
+            else
+            {
+                if (this.getEtiqueta() == dato.getEtiqueta())// si no es superior comparo por etiqueta
+                {
+                    return true;
+                }
+                else return false;
+            }
             return false;
         }
-
         //metodos
+
+        //modulo consulta
+
+        public void punto1(string dominio, ArbolGeneral<DNS> raiz)
+        {
+            string[] etiquetas = dominio.Split(".");
+            int contador = etiquetas.Length-1;
+            _punto1(dominio,contador, raiz);
+        }
+
+        private void _punto1(string dominio,int contador, ArbolGeneral<DNS>raiz)
+        {
+            contador--;
+            // primero los hijos recursivamente
+            foreach (var hijo in raiz.getHijos())
+            {
+                if (dominio[contador].Equals(hijo.getDato().getEtiqueta()))
+                {
+                    _punto1(dominio, contador, raiz);
+                    Console.WriteLine(hijo.getDato().getEtiqueta());
+                }
+            }
+        }
+
+
+        //public void postorden()
+        //{
+        //    // primero los hijos recursivamente
+        //    foreach (var hijo in this.hijos)
+        //        hijo.postorden();
+
+        //    // luego procesamos raiz
+        //    Console.Write(this.dato + " ");
+        //}
+        //modulo consulta
+
     }
 }
