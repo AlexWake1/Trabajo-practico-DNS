@@ -1,0 +1,10 @@
+hola profe, el principal problema que tengo con el tp es que no sé bien como implementar el agregado de nodos,
+ el único problema que tengo es que no puedo hacer que los nodos que están repetidos no se agreguen de forma
+ correcta, por ejemplo las url "www.youtube.com" "es.youtube.com", en este caso tendría que haber un nodo raiz,
+ después un nodo ".com", un nodo hijo del anterior "youtube" y que "youtube" tenga 2 hijos distintos "www" y "es".
+ porque después con los otros problemas que tengo en los otros puntos creo que teniendo el agregado hecho de
+ forma correcta voy a poder corregir los problemas que tienen porque ya los tengo encaminados y con una idea de
+implementar.
+después, el modulo de consultas yo lo hice en el main aunque no sé si debería ir en la clase dns y al revés, 
+el modulo de administración lo implementé en la clase dns aunque no sé si lo debería implementar en el main
+por si se quiere descargar el código, estoy usando .net 6.0
