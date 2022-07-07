@@ -24,7 +24,6 @@
         {
             this.getHijos().Remove(hijo);
         }
-
         public bool esHoja()
         {
             return this.getHijos().Count == 0;
@@ -124,7 +123,6 @@
             }
             return nodosxnivelmax;
         }
-
         public void preorden()
         {
             // primero procesamos raiz
