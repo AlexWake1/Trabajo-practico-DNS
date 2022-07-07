@@ -2,15 +2,17 @@
 {
     public class DNS
     {
+        #region Variables
         private string etiqueta;
         private string ip = null;
         private string servicios = null;
         private bool esSuperior = false;
         private bool esHoja = false;
         private ArbolGeneral<DNS> padre;
-        private List<ArbolGeneral<DNS>> hijos = new List<ArbolGeneral<DNS>>();
+        #endregion 
 
-        public DNS(string etiqueta, string ip, string servicios)//constructor completo
+        #region Constructores
+        public DNS(string etiqueta, string ip, string servicios)//constructor completo 
         {
             this.etiqueta = etiqueta;
             this.ip = ip;
@@ -20,97 +22,43 @@
         {
             this.etiqueta = etiqueta;
         }
-        public DNS()//nodo raiz
-        {
+        #endregion
 
-        }
-        public override string ToString()
+        #region Propiedades
+        public string Etiqueta
         {
-            //if (this.getIp() != null)
-            //{
-            //    return etiqueta + " " + ip + " ";
-            //}
-            //else
-            return etiqueta + " ";
+            set { etiqueta = value; }
+            get { return etiqueta; }
+        }
+        public string IP
+        {
+            set { ip = value; }
+            get { return ip; }
+        }
+        public string Servicios
+        {
+            set { servicios = value; }
+            get { return servicios; }
+        }
+        public bool EsSuperior
+        {
+            set { esSuperior = value; }
+            get { return esSuperior; }
+        }
+        public bool EsHoja
+        {
+            set { esHoja = value; }
+            get { return esHoja; }
+        }
+        public ArbolGeneral<DNS> Padre
+        {
+            set { padre = value; }
+            get { return padre; }
+        }
+        #endregion
 
-
-            //return " Etiqueta: " + etiqueta + " ip: " + ip + " Servicios: " + servicios + " Es superior: " + esSuperior;
-            //if (getEsHoja())
-            //    return "Hoja";
-            //if (getEsSuperior())
-            //    return "superior";
-            //else return etiqueta + " ";
-        }
-
-        //cuando termine voy a corregir, implementar, arreglar y borrar las propiedades que no use
-
-
-        //propiedades
-        public string getEtiqueta()
-        {
-            return etiqueta;
-        }
-        public void setEtiqueta(string nuevaEtiqueta)
-        {
-            this.etiqueta = nuevaEtiqueta;
-        }
-        public string getIp()
-        {
-            return ip;
-        }
-        public void setIp(string nuevaIP)
-        {
-            this.ip = nuevaIP;
-        }
-        public string getServicios()
-        {
-            return servicios;
-        }
-        public void setServicios(string listaservicios)
-        {
-            servicios = listaservicios;
-        }
-        public bool getEsSuperior()
-        {
-            return esSuperior;
-        }
-        public void setEsSuperior(bool x)
-        {
-            esSuperior = x;
-        }
-        public bool getEsHoja()
-        {
-            return esHoja;
-        }
-        public void setEsHoja(bool x)
-        {
-            esHoja = x;
-        }
-        public bool Hoja()
-        {
-            return hijos.Count == 0;
-        }
-        public ArbolGeneral<DNS> getPadre()
-        {
-            return padre;
-        }
-        public void setPadre(ArbolGeneral<DNS> nuevopadre)
-        {
-            padre = nuevopadre;
-        }
-        public List<ArbolGeneral<DNS>> getHijos()
-        {
-            return hijos;
-        }
-        public void agregarHijos(ArbolGeneral<DNS> nuevohijo)
-        {
-            hijos.Add(nuevohijo);
-        }
-
-        //propiedades
-
-        //modulo de administración
-        public void agregar(ArbolGeneral<DNS> raiz)
+        #region Modulo de administración
+        public void Agregar(ArbolGeneral<DNS> raiz)
         {
             string[] etiquetas = this.etiqueta.Split('.');
             int cont = etiquetas.Length - 1;
@@ -119,64 +67,56 @@
         private void _agregar(ArbolGeneral<DNS> nuevoarbol, string[] etiquetas, int cont, DNS dnsraiz, ArbolGeneral<DNS> nodoraiz)
         {
             DNS dnsaux = new DNS(etiquetas[cont]);
-            dnsaux.setPadre(nuevoarbol);
-            //si es la primer etiqueta es de orden superior
-            if (cont == etiquetas.Length - 1)
+            if (cont == etiquetas.Length - 1)//si es la última etiqueta es de orden superior
             {
-                dnsaux.setEsSuperior(true);
+                dnsaux.EsSuperior = true;
             }
-            //si es ultima etiqueta es un nodo hoja
-            if (cont == 0)
+            if (cont == 0)//si es la primer etiqueta es un nodo hoja
             {
-                dnsaux.setEsHoja(true);
-                dnsaux.setIp(dnsraiz.getIp());
-                dnsaux.setServicios(dnsraiz.getServicios());
+                dnsaux.EsHoja = true;
+                dnsaux.IP = dnsraiz.IP;
+                dnsaux.Servicios = dnsraiz.Servicios;
             }
+            dnsaux.Padre = nuevoarbol;
             ArbolGeneral<DNS> arbolaux = new ArbolGeneral<DNS>(dnsaux);
 
             cont--;
 
+            bool existe = _existe(arbolaux, nodoraiz);
+
+            if (!existe)
+            {
+                nuevoarbol.agregarHijo(arbolaux);
+            }
+            if (existe && cont >= 0)
+            {
+                ArbolGeneral<DNS> a1 = _buscar(arbolaux, nodoraiz);
+                _agregar(a1, etiquetas, cont, dnsraiz, nodoraiz);
+            }
             if (cont >= 0)
             {
                 _agregar(arbolaux, etiquetas, cont, dnsraiz, nodoraiz);
             }
-
-            //esta parte es la que no quiere salir
-            bool existe = _existe(arbolaux, nuevoarbol);
-            nuevoarbol.agregarHijo(arbolaux);
-
-            if (!existe)
-            {
-
-            }
-            if (existe)
-            {
-                ArbolGeneral<DNS> arbaux = _buscar(arbolaux, nodoraiz);
-                arbaux.getDato().getPadre().agregarHijo(arbolaux);
-            }
         }
-
-        public void eliminar(DNS nodo, ArbolGeneral<DNS> nodoraiz)//funciona bien solamente si hay un dns 
+        public void Eliminar(DNS nodo, ArbolGeneral<DNS> nodoraiz)
         {
-            string[] etiqueta = nodo.getEtiqueta().Split('.');
+            string[] etiqueta = nodo.Etiqueta.Split('.');
             int cont = etiqueta.Length - 1;
             _eliminar(etiqueta, cont, nodo, nodoraiz);
         }
         private void _eliminar(string[] etiqueta, int cont, DNS dnsraiz, ArbolGeneral<DNS> nodoraiz)
         {
-
             DNS dnsaux = new DNS(etiqueta[cont]);
             if (cont == etiqueta.Length - 1)
             {
-                dnsaux.setEsSuperior(true);
+                dnsaux.EsSuperior = true;
             }
             if (cont == 0)
             {
-                dnsaux.setEsHoja(true);
-                dnsaux.setIp(dnsraiz.getIp());
-                dnsaux.setServicios(dnsraiz.getServicios());
+                dnsaux.esHoja = true;
+                dnsaux.IP = dnsraiz.IP;
+                dnsaux.Servicios = dnsraiz.Servicios;
             }
-
             ArbolGeneral<DNS> arbolaux = new ArbolGeneral<DNS>(dnsaux);
             cont--;
 
@@ -190,13 +130,126 @@
             {
                 if (arbaux.getHijos().Count == 0)
                 {
-                    arbaux.getDato().getPadre().eliminarHijo(arbaux);
+                    arbaux.getDato().Padre.eliminarHijo(arbaux);
                 }
             }
-        }
-        //modulo de administración
+        }//funciona bien
+        #endregion
 
-        //metodos auxiliares
+        #region Módulo de consulta
+        public void punto1(string dominio, ArbolGeneral<DNS> raiz)
+        {
+            string[] etiquetas = dominio.Split(".");
+            int contador = etiquetas.Length - 1;
+            _punto1(etiquetas, contador, raiz);
+        }
+        public void _punto1(string[] dominio, int contador, ArbolGeneral<DNS> raiz)
+        {
+            foreach (var hijo in raiz.getHijos())
+            {
+                if (dominio[contador].Equals(hijo.getDato().Etiqueta))
+                {
+                    if (contador > 0)
+                    {
+                        contador--;
+                        _punto1(dominio, contador, hijo);
+                    }
+                    if (hijo.esHoja())
+                    {
+                        DNS Aux = hijo.getDato();
+                        Console.WriteLine($"Etiqueta: {Aux.Etiqueta}\nIP: {Aux.IP}\nServicios: {Aux.Servicios}\n");
+                        break;
+                    }
+                }
+            }
+        }//este punto no funciona del todo bien. se debe al agregado
+        public void punto2(string dominio, ArbolGeneral<DNS> raiz)
+        {
+            string[] etiquetas = dominio.Split(".");
+            int contador = etiquetas.Length - 1;
+            _punto2(etiquetas, contador, raiz);
+        }
+        public void _punto2(string[] dominio, int contador, ArbolGeneral<DNS> raiz)
+        {
+            foreach (var hijo in raiz.getHijos())
+            {
+                if (dominio[contador].Equals(hijo.getDato().Etiqueta))
+                {
+                    if (contador > 0)
+                    {
+                        contador--;
+                        _punto2(dominio, contador, hijo);
+                    }
+                    if (contador == 0)
+                    {
+                        foreach (var item in hijo.getHijos())
+                        {
+                            if (item.getDato().EsHoja==true)
+                            {
+                                DNS Aux = item.getDato();
+                                Console.WriteLine($"Etiqueta: {Aux.Etiqueta}\nIP: {Aux.IP}\nServicios: {Aux.Servicios}\n");
+                            }
+                        }
+                    }
+                }
+            }
+        }//funciona bien
+        public void punto3(int nivel, ArbolGeneral<DNS> nodoraiz)//funciona bien
+        {
+            int naux = 1;
+            int nsup = 0;//nivel superior
+            int nmed = 0;//nivel medio
+            int ninf = 0;//nivel inferior
+            Cola<ArbolGeneral<DNS>> colaaux = new Cola<ArbolGeneral<DNS>>();
+            ArbolGeneral<DNS> arbolAux;
+
+            colaaux.encolar(nodoraiz);
+            colaaux.encolar(null);
+
+            while (!colaaux.esVacia())
+            {
+                arbolAux = colaaux.desencolar();
+
+                if (arbolAux == null)
+                {
+                    if (!colaaux.esVacia())
+                    {
+                        naux++;
+                        colaaux.encolar(null);
+                    }
+                }
+                else
+                {
+                    foreach (var hijo in arbolAux.getHijos())
+                    {
+                        DNS DATOAUX = hijo.getDato();
+                        if (naux == nivel)
+                        {
+                            if (hijo.getDato().Etiqueta != null)
+                            {
+                                if (hijo.getDato().EsHoja)
+                                {
+                                    ninf++;
+                                }
+                                if (!hijo.getDato().EsSuperior && !hijo.getDato().EsHoja)
+                                {
+                                    nmed++;
+                                }
+                                if (hijo.getDato().EsSuperior)
+                                {
+                                    nsup++;
+                                }
+                            }
+                        }
+                        colaaux.encolar(hijo);
+                    }
+                }
+            }
+            Console.WriteLine($"En en nivel:{nivel}\nNodos de nivel superior:{nsup}\nNodos intermedios:{nmed} \nNodos hojas:{ninf} ");
+        }//funciona bien
+        #endregion
+
+        #region Métodos auxiliares
         private bool _existe(ArbolGeneral<DNS> dato, ArbolGeneral<DNS> raizgeneral)//devuelve true o false si encuentra el dato en la raiz
         {
             Cola<ArbolGeneral<DNS>> c = new Cola<ArbolGeneral<DNS>>();
@@ -206,43 +259,17 @@
             while (!c.esVacia())
             {
                 arbolAux = c.desencolar();
+
                 if (dato.getDato().igual(arbolAux.getDato()))
                 {
                     existe = true;
                     break;
                 }
+
                 foreach (var hijo in arbolAux.getHijos())
                     c.encolar(hijo);
             }
             return existe;
-        }
-        private bool igual(DNS dato)//hice este método porque estuve teniendo problemas con el .Equals();
-        {
-            if (this.getEsHoja() && dato.getEsHoja())//si es hoja comparo por ip
-            {
-                if (this.getIp() == dato.getIp())
-                {
-                    return true;
-                }
-                else return false;
-            }
-            if (this.getEsSuperior() && dato.getEsSuperior())//si es superior comparo por etiqueta
-            {
-                if (this.getEtiqueta() == dato.getEtiqueta())
-                {
-                    return true;
-                }
-                else return false;
-            }
-            if (this.getEsSuperior() == false && dato.getEsSuperior() == false && this.getEsHoja() == false && dato.getEsHoja() == false)//si no es superior ni hoja
-            {
-                if (this.getEtiqueta() == dato.getEtiqueta())
-                {
-                    return true;
-                }
-                else return false;
-            }
-            return false;
         }
         private ArbolGeneral<DNS> _buscar(ArbolGeneral<DNS> dato, ArbolGeneral<DNS> raizgeneral)//devuelve una referencia a un nodo en la raiz si la encuentra
         {
@@ -253,27 +280,55 @@
             while (!c.esVacia())
             {
                 arbolAux = c.desencolar();
+
                 if (dato.getDato().igual(arbolAux.getDato()))
                 {
                     return arbolAux;
                 }
+
                 foreach (var hijo in arbolAux.getHijos())
                     c.encolar(hijo);
             }
             return null;
         }
-        public void postorden()//es para recorrer los hijos del modulo de consulta punto 2
-        {
-            // primero los hijos recursivamente
-            foreach (var hijo in this.hijos)
-                hijo.getDato().postorden();
-
-            // luego procesamos raiz
-            if (this.getEsHoja())
+        private bool igual(DNS dato)//hice este método porque estuve teniendo problemas con el .Equals();
+        {   //si es hoja comparo por IP
+            if (this.EsHoja && dato.EsHoja)
             {
-                Console.Write(this + " ");
+                if (this.IP == dato.IP)
+                {
+                    return true;
+                }
+                else return false;
             }
+            //si es superior comparo por etiqueta
+            if (this.EsSuperior && dato.EsSuperior)
+            {
+                if (this.Etiqueta == dato.Etiqueta)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            //si no es superior ni hoja comparo por etiqueta
+            if (!this.EsSuperior && !dato.EsSuperior && !this.EsHoja && !dato.EsHoja)
+            {
+                if (this.Etiqueta == dato.Etiqueta)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            if (this.Equals(dato))
+            {
+                return true;
+            }
+            return false;
         }
-        //metodos auxiliares
+        public override string ToString()
+        {
+            return etiqueta + " ";
+        }
+        #endregion
     }
 }

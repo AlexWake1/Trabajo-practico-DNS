@@ -8,3 +8,8 @@ implementar.
 después, el modulo de consultas yo lo hice en el main aunque no sé si debería ir en la clase dns y al revés, 
 el modulo de administración lo implementé en la clase dns aunque no sé si lo debería implementar en el main
 por si se quiere descargar el código, estoy usando .net 6.0
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+actualmente corregí casi todo, ahora creo que solamente tengo un solo problema y es solo con el agregado,
+ el problema es que si agrego urls con 3 dominions el programa funciona perfecto, pero si quiero agregar una url 
+con 4 dominios el árbol se hace mal y por lo tanto las consultas también se ven afectadas
+ 

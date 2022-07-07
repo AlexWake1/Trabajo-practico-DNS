@@ -204,5 +204,10 @@
                 }
             }
         }
+        public override string ToString()
+        {
+            return dato.ToString();
+        }
+
     }
 }
