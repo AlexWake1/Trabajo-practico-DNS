@@ -3,15 +3,18 @@
     public class DNS
     {
         #region Variables
+
         private string etiqueta;
         private string ip = null;
         private string servicios = null;
         private bool esSuperior = false;
         private bool esHoja = false;
         private ArbolGeneral<DNS> padre;
+
         #endregion 
 
         #region Constructores
+
         public DNS(string etiqueta, string ip, string servicios)//constructor completo 
         {
             this.etiqueta = etiqueta;
@@ -22,6 +25,7 @@
         {
             this.etiqueta = etiqueta;
         }
+
         #endregion
 
         #region Propiedades
@@ -58,13 +62,13 @@
         #endregion
 
         #region Modulo de administración
-        public void Agregar(ArbolGeneral<DNS> raiz)
+        public void Agregarse(ArbolGeneral<DNS> raiz)
         {
             string[] etiquetas = this.etiqueta.Split('.');
             int cont = etiquetas.Length - 1;
-            _agregar(raiz, etiquetas, cont, this, raiz);
+            _Agregarse(raiz, etiquetas, cont, this, raiz);
         }
-        private void _agregar(ArbolGeneral<DNS> nuevoarbol, string[] etiquetas, int cont, DNS dnsraiz, ArbolGeneral<DNS> nodoraiz)
+        private void _Agregarse(ArbolGeneral<DNS> nuevoarbol, string[] etiquetas, int cont, DNS dnsraiz, ArbolGeneral<DNS> nodoraiz)
         {
             DNS dnsaux = new DNS(etiquetas[cont]);
             if (cont == etiquetas.Length - 1)//si es la última etiqueta es de orden superior
@@ -91,20 +95,20 @@
             if (existe && cont >= 0)
             {
                 ArbolGeneral<DNS> a1 = _buscar(arbolaux, nodoraiz);
-                _agregar(a1, etiquetas, cont, dnsraiz, nodoraiz);
+                _Agregarse(a1, etiquetas, cont, dnsraiz, nodoraiz);
             }
             if (cont >= 0)
             {
-                _agregar(arbolaux, etiquetas, cont, dnsraiz, nodoraiz);
+                _Agregarse(arbolaux, etiquetas, cont, dnsraiz, nodoraiz);
             }
         }
         public void Eliminar(DNS nodo, ArbolGeneral<DNS> nodoraiz)
         {
             string[] etiqueta = nodo.Etiqueta.Split('.');
             int cont = etiqueta.Length - 1;
-            _eliminar(etiqueta, cont, nodo, nodoraiz);
+            _Eliminar(etiqueta, cont, nodo, nodoraiz);
         }
-        private void _eliminar(string[] etiqueta, int cont, DNS dnsraiz, ArbolGeneral<DNS> nodoraiz)
+        private void _Eliminar(string[] etiqueta, int cont, DNS dnsraiz, ArbolGeneral<DNS> nodoraiz)
         {
             DNS dnsaux = new DNS(etiqueta[cont]);
             if (cont == etiqueta.Length - 1)
@@ -117,12 +121,14 @@
                 dnsaux.IP = dnsraiz.IP;
                 dnsaux.Servicios = dnsraiz.Servicios;
             }
+
             ArbolGeneral<DNS> arbolaux = new ArbolGeneral<DNS>(dnsaux);
+
             cont--;
 
             if (cont >= 0)
             {
-                _eliminar(etiqueta, cont, dnsraiz, nodoraiz);
+                _Eliminar(etiqueta, cont, dnsraiz, nodoraiz);
             }
 
             ArbolGeneral<DNS> arbaux = _buscar(arbolaux, nodoraiz);
@@ -143,7 +149,7 @@
             int contador = etiquetas.Length - 1;
             _punto1(etiquetas, contador, raiz);
         }
-        public void _punto1(string[] dominio, int contador, ArbolGeneral<DNS> raiz)
+        private void _punto1(string[] dominio, int contador, ArbolGeneral<DNS> raiz)
         {
             foreach (var hijo in raiz.getHijos())
             {
@@ -157,19 +163,19 @@
                     if (hijo.esHoja())
                     {
                         DNS Aux = hijo.getDato();
-                        Console.WriteLine($"Etiqueta: {Aux.Etiqueta}\nIP: {Aux.IP}\nServicios: {Aux.Servicios}\n");
+                        Console.WriteLine($"IP: {Aux.IP}\nServicios: {Aux.Servicios}\n");
                         break;
                     }
                 }
             }
-        }//este punto no funciona del todo bien. se debe al agregado
+        }
         public void punto2(string dominio, ArbolGeneral<DNS> raiz)
         {
             string[] etiquetas = dominio.Split(".");
             int contador = etiquetas.Length - 1;
             _punto2(etiquetas, contador, raiz);
         }
-        public void _punto2(string[] dominio, int contador, ArbolGeneral<DNS> raiz)
+        private void _punto2(string[] dominio, int contador, ArbolGeneral<DNS> raiz)
         {
             foreach (var hijo in raiz.getHijos())
             {
@@ -184,7 +190,7 @@
                     {
                         foreach (var item in hijo.getHijos())
                         {
-                            if (item.getDato().EsHoja==true)
+                            if (item.getDato().EsHoja == true)
                             {
                                 DNS Aux = item.getDato();
                                 Console.WriteLine($"Etiqueta: {Aux.Etiqueta}\nIP: {Aux.IP}\nServicios: {Aux.Servicios}\n");
@@ -193,13 +199,13 @@
                     }
                 }
             }
-        }//funciona bien
+        }
         public void punto3(int nivel, ArbolGeneral<DNS> nodoraiz)//funciona bien
         {
             int naux = 1;
-            int nsup = 0;//nivel superior
-            int nmed = 0;//nivel medio
-            int ninf = 0;//nivel inferior
+            int nsup = 0;//contador de nivel superior
+            int nmed = 0;//contador de nivel medio
+            int ninf = 0;//contador de nivel inferior
             Cola<ArbolGeneral<DNS>> colaaux = new Cola<ArbolGeneral<DNS>>();
             ArbolGeneral<DNS> arbolAux;
 
@@ -241,12 +247,16 @@
                                 }
                             }
                         }
+                        if (naux > nivel)
+                        {
+                            break;
+                        }
                         colaaux.encolar(hijo);
                     }
                 }
             }
             Console.WriteLine($"En en nivel:{nivel}\nNodos de nivel superior:{nsup}\nNodos intermedios:{nmed} \nNodos hojas:{ninf} ");
-        }//funciona bien
+        }
         #endregion
 
         #region Métodos auxiliares
@@ -275,7 +285,6 @@
         {
             Cola<ArbolGeneral<DNS>> c = new Cola<ArbolGeneral<DNS>>();
             ArbolGeneral<DNS> arbolAux;
-            bool existe = false;
             c.encolar(raizgeneral);
             while (!c.esVacia())
             {
@@ -291,7 +300,7 @@
             }
             return null;
         }
-        private bool igual(DNS dato)//hice este método porque estuve teniendo problemas con el .Equals();
+        private bool igual(DNS dato)
         {   //si es hoja comparo por IP
             if (this.EsHoja && dato.EsHoja)
             {
