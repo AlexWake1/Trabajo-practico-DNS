@@ -81,12 +81,13 @@
                 dnsaux.IP = dnsraiz.IP;
                 dnsaux.Servicios = dnsraiz.Servicios;
             }
+
             dnsaux.Padre = nuevoarbol;
             ArbolGeneral<DNS> arbolaux = new ArbolGeneral<DNS>(dnsaux);
 
             cont--;
 
-            bool existe = _existe(arbolaux, nodoraiz);
+            bool existe = _existe(arbolaux, nuevoarbol);
 
             if (!existe)
             {
@@ -94,7 +95,7 @@
             }
             if (existe && cont >= 0)
             {
-                ArbolGeneral<DNS> a1 = _buscar(arbolaux, nodoraiz);
+                ArbolGeneral<DNS> a1 = _buscar(arbolaux, nuevoarbol);
                 _Agregarse(a1, etiquetas, cont, dnsraiz, nodoraiz);
             }
             if (cont >= 0)
