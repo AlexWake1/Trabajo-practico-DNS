@@ -1,6 +1,6 @@
 ﻿using TPFINAL;
 
-#region Estructura del árbol
+#region Estructura del árbol.
 
 DNS DNS_raiz = new DNS("Nodo raiz");
 ArbolGeneral<DNS> Nodo_raiz = new ArbolGeneral<DNS>(DNS_raiz);
@@ -23,7 +23,7 @@ google.Agregarse(Nodo_raiz);
 wikipedia.Agregarse(Nodo_raiz);
 googlear.Agregarse(Nodo_raiz);
 
-#endregion
+#endregion.
 
 #region Módulo consulta: Punto 1.
 
@@ -66,93 +66,109 @@ googlear.Agregarse(Nodo_raiz);
 //Console.WriteLine("\n\n");
 #endregion
 
-#region Menú
+#region Menú.
 
 bool bucle = true;
 
 while (bucle)
 {
-    opciones();
-    int respuesta = int.Parse(Console.ReadLine());
-    switch (respuesta)
+
+    try
     {
-        case 0:
-            bucle = false;
-            break;
-        case 1:
-            Console.Clear();
-            Console.WriteLine("Indique la url completa");
-            string url = Console.ReadLine();
-            Console.WriteLine("Indique la dirección IP completa");
-            string dip = Console.ReadLine();
-            Console.WriteLine("Indique los servicios de la página");
-            string servicios = Console.ReadLine();
-            DNS nuevoNodo=new DNS(url, dip, servicios);
-            nuevoNodo.Agregarse(Nodo_raiz);
-            break;
-        case 2:
-            Console.Clear();
-            Console.WriteLine("Indique la url completa");
-            string URL = Console.ReadLine();
-            Console.WriteLine("Indique la dirección IP completa");
-            string DIP = Console.ReadLine();
-            Console.WriteLine("Indique los servicios de la página");
-            string SERVICIOS = Console.ReadLine();
-            DNS nuevoNodo1 = new DNS(URL, DIP, SERVICIOS);
-            DNS_raiz.Eliminar(nuevoNodo1,Nodo_raiz);
-            break;
-        case 3:
-            Console.Clear();
-            Console.WriteLine("Indique un dominio completo.");
-            string aux2 = Console.ReadLine();
-            Console.WriteLine();
-            DNS_raiz.punto1(aux2,Nodo_raiz);
-            break;
-        case 4:
-            Console.Clear();
-            Console.WriteLine("Indique un dominio.");
-            string aux1 = Console.ReadLine();
-            Console.WriteLine();
-            DNS_raiz.punto2(aux1,Nodo_raiz);
-            break;
-        case 5:
-            Console.Clear();
-            Console.WriteLine("Indique el nivel de profundidad del árbol.\n");
-            int aux = int.Parse(Console.ReadLine());
-            Console.WriteLine();
-            DNS_raiz.punto3(aux,Nodo_raiz);
-            Console.WriteLine();
-            break;
-        case 6:
-            Console.Clear();
-            Console.WriteLine("Recorrido Por Niveles con Separación:\n");
-            Nodo_raiz.porNivelesConSeparacion();
-            Console.WriteLine("\n");
-            break;
-        case 7:
-            Console.Clear();
-            Console.WriteLine("Recorrido Por Niveles:\n");
-            Nodo_raiz.porNiveles();
-            Console.WriteLine("\n");
-            break;
-        case 8:
-            Console.Clear();
-            Console.WriteLine("Recorrido Postorden:\n");
-            Nodo_raiz.postorden();
-            Console.WriteLine("\n");
-            break;
-        case 9:
-            Console.Clear();
-            Console.WriteLine("Recorrido Inorden:\n");
-            Nodo_raiz.inorden();
-            Console.WriteLine("\n");
-            break;
-        case 10:
-            Console.Clear();
-            Console.WriteLine("Recorrido Preorden:\n");
-            Nodo_raiz.preorden();
-            Console.WriteLine("\n");
-            break;
+        opciones();
+        int respuesta = int.Parse(Console.ReadLine());
+        switch (respuesta)
+        {
+            case 0:
+                bucle = false;
+                break;
+            case 1:
+                Console.Clear();
+                Console.WriteLine("Indique la url completa");
+                string url = Console.ReadLine();
+                Console.WriteLine("Indique la dirección IP completa");
+                string dip = Console.ReadLine();
+                Console.WriteLine("Indique los servicios de la página");
+                string servicios = Console.ReadLine();
+                DNS nuevoNodo = new DNS(url, dip, servicios);
+                nuevoNodo.Agregarse(Nodo_raiz);
+                break;
+            case 2:
+                Console.Clear();
+                Console.WriteLine("Indique la url completa");
+                string URL = Console.ReadLine();
+                Console.WriteLine("Indique la dirección IP completa");
+                string DIP = Console.ReadLine();
+                Console.WriteLine("Indique los servicios de la página");
+                string SERVICIOS = Console.ReadLine();
+                DNS nuevoNodo1 = new DNS(URL, DIP, SERVICIOS);
+                DNS_raiz.Eliminar(nuevoNodo1, Nodo_raiz);
+                break;
+            case 3:
+                Console.Clear();
+                Console.WriteLine("Indique un dominio completo.");
+                string aux2 = Console.ReadLine();
+                Console.WriteLine();
+                DNS_raiz.punto1(aux2, Nodo_raiz);
+                break;
+            case 4:
+                Console.Clear();
+                Console.WriteLine("Indique un dominio.");
+                string aux1 = Console.ReadLine();
+                Console.WriteLine();
+                DNS_raiz.punto2(aux1, Nodo_raiz);
+                break;
+            case 5:
+                try
+                {
+                    Console.Clear();
+                    Console.WriteLine("Indique el nivel de profundidad del árbol.\n");
+                    int aux = int.Parse(Console.ReadLine());
+                    Console.WriteLine();
+                    DNS_raiz.punto3(aux, Nodo_raiz);
+                    Console.WriteLine();
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("\nLa próxima vez intente indicar un valor en forma numérica.\n");
+                }
+                break;
+            case 6:
+                Console.Clear();
+                Console.WriteLine("Recorrido Por Niveles con Separación:\n");
+                Nodo_raiz.porNivelesConSeparacion();
+                Console.WriteLine("\n");
+                break;
+            case 7:
+                Console.Clear();
+                Console.WriteLine("Recorrido Por Niveles:\n");
+                Nodo_raiz.porNiveles();
+                Console.WriteLine("\n");
+                break;
+            case 8:
+                Console.Clear();
+                Console.WriteLine("Recorrido Postorden:\n");
+                Nodo_raiz.postorden();
+                Console.WriteLine("\n");
+                break;
+            case 9:
+                Console.Clear();
+                Console.WriteLine("Recorrido Inorden:\n");
+                Nodo_raiz.inorden();
+                Console.WriteLine("\n");
+                break;
+            case 10:
+                Console.Clear();
+                Console.WriteLine("Recorrido Preorden:\n");
+                Nodo_raiz.preorden();
+                Console.WriteLine("\n");
+                break;
+        }
+    }
+    catch (FormatException)
+    {
+        Console.Clear();
+        Console.WriteLine("\nEscriba en la consola un valor de forma numérica.\n");
     }
 }
 void opciones()
@@ -171,4 +187,4 @@ void opciones()
     Console.WriteLine();
 }
 
-#endregion
+#endregion.
