@@ -140,7 +140,7 @@
                     arbaux.getDato().Padre.eliminarHijo(arbaux);
                 }
             }
-        }//funciona bien
+        }
         #endregion
 
         #region Módulo de consulta
@@ -201,7 +201,7 @@
                 }
             }
         }
-        public void punto3(int nivel, ArbolGeneral<DNS> nodoraiz)//funciona bien
+        public void punto3(int nivel, ArbolGeneral<DNS> nodoraiz)
         {
             int naux = 1;
             int nsup = 0;//contador de nivel superior
