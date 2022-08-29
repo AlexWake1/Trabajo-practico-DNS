@@ -84,37 +84,41 @@ while (bucle)
                 break;
             case 1:
                 Console.Clear();
+                Console.WriteLine("1-Agregar DNS.");
                 Console.WriteLine("Indique la url completa");
-                string url = Console.ReadLine();
+                string? url = Console.ReadLine();
                 Console.WriteLine("Indique la dirección IP completa");
-                string dip = Console.ReadLine();
+                string? dip = Console.ReadLine();
                 Console.WriteLine("Indique los servicios de la página");
-                string servicios = Console.ReadLine();
+                string? servicios = Console.ReadLine();
                 DNS nuevoNodo = new DNS(url, dip, servicios);
                 nuevoNodo.Agregarse(Nodo_raiz);
                 break;
             case 2:
                 Console.Clear();
+                Console.WriteLine("2-Eliminar DNS.");
                 Console.WriteLine("Indique la url completa");
-                string URL = Console.ReadLine();
+                string? URL = Console.ReadLine();
                 Console.WriteLine("Indique la dirección IP completa");
-                string DIP = Console.ReadLine();
+                string? DIP = Console.ReadLine();
                 Console.WriteLine("Indique los servicios de la página");
-                string SERVICIOS = Console.ReadLine();
+                string? SERVICIOS = Console.ReadLine();
                 DNS nuevoNodo1 = new DNS(URL, DIP, SERVICIOS);
                 DNS_raiz.Eliminar(nuevoNodo1, Nodo_raiz);
                 break;
             case 3:
                 Console.Clear();
+                Console.WriteLine("3-Módulo consulta: Punto 1.");
                 Console.WriteLine("Indique un dominio completo.");
-                string aux2 = Console.ReadLine();
+                string? aux2 = Console.ReadLine();
                 Console.WriteLine();
                 DNS_raiz.punto1(aux2, Nodo_raiz);
                 break;
             case 4:
                 Console.Clear();
+                Console.WriteLine("4-Módulo consulta: Punto 2.");
                 Console.WriteLine("Indique un dominio.");
-                string aux1 = Console.ReadLine();
+                string? aux1 = Console.ReadLine();
                 Console.WriteLine();
                 DNS_raiz.punto2(aux1, Nodo_raiz);
                 break;
@@ -122,6 +126,7 @@ while (bucle)
                 try
                 {
                     Console.Clear();
+                    Console.WriteLine("5-Módulo consulta: Punto 3.");
                     Console.WriteLine("Indique el nivel de profundidad del árbol.\n");
                     int aux = int.Parse(Console.ReadLine());
                     Console.WriteLine();
@@ -135,30 +140,35 @@ while (bucle)
                 break;
             case 6:
                 Console.Clear();
+                Console.WriteLine("6-Recorrido por Niveles con separación.");
                 Console.WriteLine("Recorrido Por Niveles con Separación:\n");
                 Nodo_raiz.porNivelesConSeparacion();
                 Console.WriteLine("\n");
                 break;
             case 7:
                 Console.Clear();
+                Console.WriteLine("7-Recorrido por Niveles.");
                 Console.WriteLine("Recorrido Por Niveles:\n");
                 Nodo_raiz.porNiveles();
                 Console.WriteLine("\n");
                 break;
             case 8:
                 Console.Clear();
+                Console.WriteLine("8-Recorrido Postorden.");
                 Console.WriteLine("Recorrido Postorden:\n");
                 Nodo_raiz.postorden();
                 Console.WriteLine("\n");
                 break;
             case 9:
                 Console.Clear();
+                Console.WriteLine("9-Recorrido Inorden.");
                 Console.WriteLine("Recorrido Inorden:\n");
                 Nodo_raiz.inorden();
                 Console.WriteLine("\n");
                 break;
             case 10:
                 Console.Clear();
+                Console.WriteLine("10-Recorrido Preorden.");
                 Console.WriteLine("Recorrido Preorden:\n");
                 Nodo_raiz.preorden();
                 Console.WriteLine("\n");
